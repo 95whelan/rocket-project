@@ -5,6 +5,9 @@
 
 var target; //init the target
 var count = 0;
+var rocket;
+var lifespan = 400;
+var forceMag = 0.1;
 
 //obstacle coords
 var rx;
@@ -16,6 +19,7 @@ var rw;
 function setup(){
   createCanvas(600,400);
   target = createVector(width/2,50); //give the target some coords
+  rocket = new Rocket();
 
 
   //init the obstacle
@@ -28,6 +32,11 @@ function setup(){
 
 function draw(){
   background(0);
+
+  fill(255,0,0,127);
+  rocket.update();
+  rocket.show();
+  count++;
 
   //draw an obstacle
   fill(255);

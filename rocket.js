@@ -12,6 +12,7 @@ function Rocket(dna){
   this.hitTarget = false;
   this.wallCrashed = false;
   this.obsCrashed = false;
+
   if (dna){
     this.dna = dna;
   } else {
@@ -43,7 +44,7 @@ function Rocket(dna){
 
     if (this.wallCrashed){
       this.fitness /= 5;
-      this.fitness.add(200/this.closestApproach);
+      this.fitness = this.fitness + (200/this.closestApproach);
     }
   } // end of fitness function
 
@@ -83,7 +84,7 @@ function Rocket(dna){
     this.applyForce(this.dna.genes[count]) //get the next vector from the DNA
 
     //only actually move the rocket if it hasn't crashed or hit the target
-    if (!this.completed && !this.crashed && !this.wallCrashed){
+    if (!this.completed && !this.obsCrashed && !this.wallCrashed){
       this.vel.add(this.acc);
       this.pos.add(this.vel);
       this.acc.mult(0);

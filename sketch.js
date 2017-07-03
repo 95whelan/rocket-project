@@ -19,7 +19,7 @@ var rw;
 function setup(){
   createCanvas(600,400);
   target = createVector(width/2,50); //give the target some coords
-  rocket = new Rocket();
+  rocket = new Population();
 
 
   //init the obstacle
@@ -33,10 +33,49 @@ function setup(){
 function draw(){
   background(0);
 
-  fill(255,0,0,127);
-  rocket.update();
-  rocket.show();
+  rocket.run();
   count++;
+
+  if (count == lifespan){
+    //now establish the highest and lowest, then increment and decrement them
+
+    var highest = 0;
+    var hiIndex;
+    var lowest = 90000;
+    var lowIndex;
+
+    for (var i = 0; i < 4; i++){
+      if (rocket.population[i].meanFitness > highest){
+        highest = rocket.population[i].meanFitness;
+        hiIndex = i;
+      }
+      if (rocket.population[i].meanFitness < lowest){
+        lowest = rocket.population[i].meanFitness;
+        lowIndex = i;
+      }
+    }
+
+    rocket.newCounts[hiIndex]++;
+    rocket.newCounts[lowIndex]--;
+
+    //now build each matingpool
+
+    for (var i = 0; i < 4; i++){
+      rocket.matingpoolList[i] = new Matingpool(rocket.population[i]);
+    }
+
+    //now undergo selection
+    rocket.newSpeciesRockets = [];
+
+    for (var i = 0; i < 4; i++){
+      rocket.newSpeciesRockets[i] = new Selection(rocket.matingpoolList[i].matingpool,rocket.newCounts[i], rocket.population.rate[i]);
+    }
+
+    //now call population again
+    rocket = new Population(rocket.newSpeciesRockets.newRockets);
+    count = 0;
+
+  } // end of if count == lifespan
 
   //draw an obstacle
   fill(255);

@@ -16,7 +16,7 @@ function Population(speciesRockets){
     this.speciesRockets = speciesRockets;
 
     for (var i = 0; i < 4; i++){
-      this.population = this.speciesRockets;
+      this.population[i] = this.speciesRockets[i];
     }
   } else{
     for (var i = 0; i < 4; i++){
